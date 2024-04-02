@@ -8,20 +8,18 @@ function silnia ($x) {
 	
 	if (!is_string($x)) {
 		
-		$result = 1;
-			
-		for($j = 1; $j <=$x; $j++) {
-			$result *= $j;
-		}
-		
-		return $result;
+        if($x == 1){
+            return 1;
+        }else {
+            return $x * silnia($x -1);
+        }
 
 	} else {
 		return -1;
 	}
 }
 
-echo silnia(4);
+echo silnia(5);
 echo "<br>";
 echo "-----------------";
 echo "<br>";
@@ -44,3 +42,17 @@ for($x = 1; $x <=50; $x++){
         echo $x. " ";
     }
 }
+
+function test($a) {
+    echo $a;
+}
+
+$a = 5;
+$b = 15;
+
+test($a++);
+
+test(++$b);
+
+
+
