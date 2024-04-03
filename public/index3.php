@@ -24,3 +24,8 @@ function silnia($x){
 }
 
 echo silnia((int) $_GET['a']);
+
+
+echo "<br>";
+
+
