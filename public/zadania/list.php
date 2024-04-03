@@ -58,11 +58,11 @@
             $stmt->bindParam(':id',$_GET['delete']);
 
             $stmt->execute();
-            echo "Record deleted successfully<br>";
+            echo "Record deleted successfully.<br>";
         }
 
         if(isset($_GET['done'])) {
-            $sql = "UPDATE zadania SET is_done=1 WHERE id=";
+            $sql = "UPDATE zadania SET is_done= (1 - is_done) WHERE id=".$_GET['done'];
 
             $stmt = $conn->prepare($sql);
           
@@ -73,14 +73,14 @@
         $stmt = $conn->query("SELECT * FROM zadania");
             
             while ($row = $stmt->fetch()) {
-                //if($row['is_done'] == 0) {
-                 //   $row['is_done'] ='Nie zrobione';
-                //}else {
-                 //   $row['is_done'] ='Skonczone';
-                //}
+                if($row['is_done'] == 0) {
+                    $row['is_done'] ='Nie zrobione';
+                }else {
+                   $row['is_done'] ='Skonczone';
+                }
 
-                echo $row['id']." | ".$row['tasks']." |  ".$row['is_done']."<a href='list.php?delete=".$row['id']."'>X</a> 
-                <a href='list?done=".$row['id']."'>Done</a><br>";
+                echo $row['id']." | ".$row['tasks']." |  ".$row['is_done']." <a href='list.php?delete=".$row['id']."'> X</a> 
+                <a href='list.php?done=".$row['id']."'>Done</a><br>";
 
             }
 
