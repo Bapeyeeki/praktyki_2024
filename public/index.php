@@ -79,7 +79,7 @@ function fibonaci($x){
       }
 }
 
-echo fibonaci(5);
+echo fibonaci(4);
 
 echo '-----';
 echo $fibo;
