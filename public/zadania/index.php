@@ -25,7 +25,7 @@
 
     <br>
 
-    <form action="" method="post">
+    <form action="index.php" method="post">
         <label for="sort">Sortuj:</label>
         <select name="sort" id="sort">
             <option value="status">Wg. statusu</option>
