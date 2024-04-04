@@ -28,9 +28,11 @@ try {
     // Ustawienie trybu wyjątków PDO na ERRMODE_EXCEPTION
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+    $databse = new Database($conn);
+
     if (isset($_POST['submit'])) {
         // Sprawdzanie czy pole "Opis zadania" jest puste
-        $result = createTask($conn, $_POST['zadanie'], $_POST['status']);
+        $result = $databse->createTask($_POST['zadanie'], $_POST['status']);
 
         if ($result) {
             echo "Records inserted successfully.<br><br>";
@@ -40,7 +42,7 @@ try {
     }
 
     if(isset($_GET['delete'])) {
-        $result = deleteTask($conn, $_GET['delete']);
+        $result = $databse->deleteTask($_GET['delete']);
 
         if($result) { 
             echo "Records deleted!<br><br>";
@@ -50,7 +52,7 @@ try {
     }
 
     if(isset($_GET['done'])) {
-       $result =  changeStatus($conn, $_GET['done']);
+       $result = $databse->changeStatus($_GET['done']);
 
         if($result) { 
             echo "Records updated!<br><br>";
@@ -60,7 +62,7 @@ try {
     }
 
     //Funkcja wyswietlania rekordow listy
-    $recordsArray = getRecords($conn, $search,$sort_by);
+    $recordsArray = $databse->getRecords($search,$sort_by);
 
     // Przetwarzanie rekordów w tablicy
     foreach ($recordsArray as $record) {
