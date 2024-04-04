@@ -17,6 +17,7 @@ if(isset($_POST['reset'])) {
     $search = '';
 }
 
+
 //sortowanie
 if(isset($_POST['sort'])) {
     $sort_by = $_POST['sort'];
@@ -58,41 +59,13 @@ try {
         }
     }
 
-    $sql = "SELECT * FROM zadania";
+    //Funkcja wyswietlania rekordow listy
+    $recordsArray = getRecords($conn, $search,$sort_by);
 
-    if(!empty($search)) {
-        $sql .= " WHERE tasks LIKE :search";
-    }
-
-    if($sort_by === 'status') {
-        $sql .= " ORDER BY is_done ASC"; // Uporządkowanie według statusu wykonania
-    } elseif ($sort_by === 'opis') {
-        $sql .= " ORDER BY tasks ASC"; // Uporządkowanie według opisu zadania
-    }
-
-    // Create prepared statement
-    $stmt = $conn->prepare($sql);
-
-    if (!empty($search)) {
-        // Bind parameters 
-        $stmt->bindValue(':search', "%$search%", PDO::PARAM_STR);
-    }
-
-    // Execute 
-    $stmt->execute();
-
-    // Wyświetl zadania
-    while ($row = $stmt->fetch()) {
-        if(empty($search) || strpos($row['tasks'], $search) !== false) {
-            if($row['is_done'] == 0) {
-                $row['is_done'] ='Nie zrobione';
-            } else {
-                $row['is_done'] ='Skończone';
-            }
-
-            echo $row['id']." | ".$row['tasks']." |  ".$row['is_done']." <a href='list.php?delete=".$row['id']."'> X</a> 
-            <a href='list.php?done=".$row['id']."'>Done</a><br>";
-        }
+    // Przetwarzanie rekordów w tablicy
+    foreach ($recordsArray as $record) {
+        echo $record['id']." | ".$record['task']." |  ".$record['status']." <a href='{$record['delete_link']}'> X</a> 
+        <a href='{$record['done_link']}'>Done</a><br>";
     }
 } catch(PDOException $e) {
 
