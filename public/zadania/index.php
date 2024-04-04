@@ -36,7 +36,7 @@
 
     <br>
 
-    <?php include 'list.php'; ?>
+    <?php include 'list.php'; ?>  
 </body>
 </html>
 

@@ -16,6 +16,7 @@ if(isset($_POST['reset'])) {
     $search = '';
 }
 
+//sortowanie
 if(isset($_POST['sort'])) {
     $sort_by = $_POST['sort'];
 }
@@ -106,3 +107,4 @@ try {
     // Zamknięcie połączenia
     $conn = null;
 }
+
