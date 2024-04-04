@@ -9,7 +9,7 @@ $sort_by = 'status'; // zmienna do sortowania
 
 //szukanie taskow
 if(isset($_POST['search'])) {
-    $search = $_POST['search'];
+    $search = strtolower(trim($_POST['search']));
 }
 
 //cofniecie
