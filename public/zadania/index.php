@@ -1,47 +1,31 @@
-<?php
-// Start the session
-session_start();
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>ToDoList</title>
 </head>
 <body>
-<?php
-
-    if(!isset($_SESSION['x'])) {
-        $_SESSION['x'] = rand(1, 100);
-    }
-
-    echo $_SESSION['x'];
-
-    $num = $_POST['num'];
-
-    if(isset($_POST['submit'])){
-        $num = $_POST['num'];
-
-        if($num < $_SESSION['x']) {
-            echo "Your number is lower <br>";
-        }elseif($num > $_SESSION['x']) {
-            echo "Your numer is higher <br>";
-        }elseif($num == $_SESSION['x']){
-            echo "Congratulations";
-            session_unset();
-        }
-    }
-
-?>
-
-<p>
-    <form action="" method="post">
-        <input type="text" name="num">
-        <button type="submit" name="submit">Guess</button>
-        <button type="reset" name="Reset">Reset</button>
+    <form action="index.php" method="post">
+        Opis zadania: <input type="text" name="zadanie" id="zadanie"><br><br>
+        Status zadania: <input type="number" min="0" max="1" name="status" id="is_done"><br><br>
+        <input type="submit" value="zapisz" name="submit">
+        <input type="reset" value="reset"><br>
+       
     </form>
-</p>
+
+    <br>
+
+    <form action="index.php" method="post">
+        <label for="search">Wyszukaj zadanie:</label>
+        <input type="text" name="search" id="search"><br><br>
+        <input type="submit" value="Szukaj">
+        <input type="submit" name="reset" value="Cofnij wyszukiwanie">
+    </form>
+
+    <br>
+
+    <?php include 'list.php'; ?>
 </body>
 </html>
 
