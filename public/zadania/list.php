@@ -27,7 +27,7 @@ try {
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     if(isset($_POST['submit'])) {
-        // Sprawdź czy pole "Opis zadania" nie jest puste
+        // Sprawdzanie czy pole "Opis zadania" jest puste
         if(empty($_POST['zadanie']) ) {
             echo "<b>Opis zadania wymagany!</b><br><br>";
         } else {
@@ -35,11 +35,11 @@ try {
             $sql = "INSERT INTO zadania (tasks, is_done) VALUES (:tasks, :is_done)";
             $stmt = $conn->prepare($sql);
         
-            // Bind parameters to statement
+            // Bind parameters 
             $stmt->bindValue(':tasks', $_POST['zadanie'], PDO::PARAM_STR);
              $stmt->bindValue(':is_done', $_POST['status'], PDO::PARAM_INT);
         
-            // Execute the prepared statement
+            // Execute 
              $stmt->execute();
             echo "Records inserted successfully.<br><br>";
         }
@@ -47,10 +47,13 @@ try {
 
     if(isset($_GET['delete'])) {
         $sql = "DELETE FROM zadania WHERE id=:id";
+        // Create prepared statement
         $stmt = $conn->prepare($sql);
 
+         // Bind parameters 
         $stmt->bindValue(':id', $_GET['delete'], PDO::PARAM_INT);
 
+        // Execute 
         $stmt->execute();
         echo "Record deleted successfully.<br><br>";
     }
@@ -58,9 +61,13 @@ try {
     if(isset($_GET['done'])) {
         $sql = "UPDATE zadania SET is_done= (1 - is_done) WHERE id=:id";
 
+        // Create prepared statement
         $stmt = $conn->prepare($sql);
+
+         // Bind parameters 
         $stmt->bindValue(':id', $_GET['done'], PDO::PARAM_INT);
       
+        // Execute 
         $stmt->execute();
         echo "Task status updated successfully.<br><br>";
     }
@@ -77,12 +84,15 @@ try {
         $sql .= " ORDER BY tasks ASC"; // Uporządkowanie według opisu zadania
     }
 
+    // Create prepared statement
     $stmt = $conn->prepare($sql);
 
     if (!empty($search)) {
+        // Bind parameters 
         $stmt->bindValue(':search', "%$search%", PDO::PARAM_STR);
     }
 
+    // Execute 
     $stmt->execute();
 
     // Wyświetl zadania
