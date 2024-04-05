@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Przelicznik walut</title>
+    <title>Przelicznik walut!</title>
 </head>
 <body>
 <!-- <form action="" method="post"> -->
