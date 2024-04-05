@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Przelicznik</title>
+    <title>Przelicznik walut!</title>
 </head>
 <body>
 <label for="imie">Imię:</label>
