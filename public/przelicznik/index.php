@@ -30,7 +30,7 @@
         formData.append('zloty', document.getElementsByName('zloty')[0].value);
         formData.append('euro', document.getElementsByName('euro')[0].value);
         formData.append('dolar', document.getElementsByName('dolar')[0].value);
-
+   
         const response = await postData(formData);
         document.getElementById('result').innerHTML = response;
     }
