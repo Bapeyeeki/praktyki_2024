@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Przelicznik walut</title>
+    <title>Przelicznik</title>
 </head>
 <body>
-<!-- <form action="" method="post"> -->
 <label for="imie">Imię:</label>
     <input type="text" name="imie" id="imie">
     <label for="nazwisko">Nazwisko:</label>
@@ -20,7 +19,6 @@
     <input type="text" name="dolar">
     <br><br>
     <input type="submit" value="Zlicz" onclick="submitForm()">
-<!-- </form> -->
 
 <script>
     async function submitForm() {
