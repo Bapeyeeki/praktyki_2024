@@ -1,18 +1,52 @@
 <?php
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Pobieramy dane z formularza
-    $zloty = isset($_POST["zloty"]) ? (float)$_POST["zloty"] : 0;
-    $euro = isset($_POST["euro"]) ? (float)$_POST["euro"] : 0;
-    $dolar = isset($_POST["dolar"]) ? (float)$_POST["dolar"] : 0;
+include 'functions.php';
 
-    // Kursy wymiany
-    $exchange_rates = [
-        "Zloty" => 1,
-        "Euro" => 4.35, // Załóżmy, że 1 euro = 4.35 złotych
-        "Dolar" => 3.70  // Załóżmy, że 1 dolar = 3.70 złotych
-    ];
+$servername = "mysql";
+$username = "v.je";
+$password = "v.je";
+$db = "praktyki";
 
-    // Sumujemy wartości w złotówkach
-    $total_pln = $zloty + ($euro * $exchange_rates["Euro"]) + ($dolar * $exchange_rates["Dolar"]);
-    echo "Suma w złotówkach: $total_pln zł";
+try {
+    $conn = new PDO("mysql:host=$servername;dbname=$db", $username, $password);
+    // Ustawienie trybu wyjątków PDO na ERRMODE_EXCEPTION
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    $converter = new CurrencyConverter($conn);
+
+    //echo "udane połaczenie";
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $imie = isset($_POST["imie"]) ? $_POST["imie"] : '';
+        $nazwisko = isset($_POST["nazwisko"]) ? $_POST["nazwisko"] : '';
+        $zloty = isset($_POST["zloty"]) ? $_POST["zloty"] : 0;
+        $euro = isset($_POST["euro"]) ? $_POST["euro"] : 0;
+        $dolar = isset($_POST["dolar"]) ? $_POST["dolar"] : 0;
+
+        
+        $total_pln = $converter->convertToPLN($zloty, $euro, $dolar);
+
+        if (is_numeric($total_pln)) {
+            echo "<br>Witaj, $imie $nazwisko!<br><b>Twoja suma w złotówkach wynosi: $total_pln zł</b><br>";
+
+            $converter->insertToDatabase($imie, $nazwisko, $total_pln);
+        } else {
+            echo $total_pln;
+        }
+    }
+
+    // Wyświetlenie rekordów z bazy danych
+    $records = $converter->showRecordsFromDatabase();
+    echo "<h2>Nasi klienci:</h2>";
+    foreach ($records as $record) {
+        echo "Imię: " . $record['imie'] . ", Nazwisko: " . $record['nazwisko'] . ", Suma w złotówkach: " . $record['suma_zloty'] . "<br>";
+    }
+
+} catch(PDOException $e) {
+
+    // Obsługa błędów
+    die("Connection failed: " . $e->getMessage());
+} finally {
+    
+    // Zamknięcie połączenia
+    $conn = null;
 }
+

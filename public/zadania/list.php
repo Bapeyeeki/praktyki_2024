@@ -8,8 +8,8 @@ $search = ''; // Inicjalizacja zmiennej dla wyszukiwania
 $sort_by = 'status'; // zmienna do sortowania
 
 //szukanie taskow
-if(isset($_POST['search'])) {
-    $search = strtolower(trim($_POST['search']));
+if(isset($_GET['search'])) {
+    $search = strtolower(trim($_GET['search']));
 }
 
 //cofniecie
@@ -30,9 +30,9 @@ try {
 
     $databse = new Database($conn);
 
-    if (isset($_POST['submit'])) {
+    if (isset($_GET['submit'])) {
         // Sprawdzanie czy pole "Opis zadania" jest puste
-        $result = $databse->createTask($_POST['zadanie'], $_POST['status']);
+        $result = $databse->createTask($_GET['zadanie'], $_GET['status']);
 
         if ($result) {
             echo "Records inserted successfully.<br><br>";
