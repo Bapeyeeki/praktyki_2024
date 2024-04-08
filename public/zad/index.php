@@ -97,3 +97,9 @@ echo $dt->format('F j, Y')."\n";
 echo "<br>";
 
 // Write a PHP script to get the current date/time of 'Australia/Melbourne'. 
+date_default_timezone_set('America/Los_Angeles');
+$date_A = date('m/d/Y h:i:s a', time());
+
+echo $date_A. "<br>";
+
+
