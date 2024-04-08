@@ -1,4 +1,6 @@
 <?php
+require __DIR__ . '/../../vendor/autoload.php';
+use GuzzleHttp\Client;
 class CurrencyConverter {
     private $api_url = "http://api.nbp.pl/api/exchangerates/tables/A?format=json";
     private $conn;
@@ -8,12 +10,10 @@ class CurrencyConverter {
     }
     
     public function fetchExchangeRates() {
-        $ch = curl_init($this->api_url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $response = curl_exec($ch);
-        curl_close($ch);
-
-        return json_decode($response, true);
+        $client = new Client();
+        $response = $client->request('GET', $this->api_url);
+        
+        return json_decode($response->getBody(), true);
     }
 
     public function convertToPLN($zloty, $euro, $dolar) {
