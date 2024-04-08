@@ -1,6 +1,7 @@
 {
     "require": {
         "nesbot/carbon": "^3.2",
-        "onspli/chess": "^0.2.0"
+        "onspli/chess": "^0.2.0",
+        "guzzlehttp/guzzle": "^7.8"
     }
 }
