@@ -8,6 +8,9 @@
     <input type="text" name="imie" id="imie">
     <label for="nazwisko">Nazwisko:</label>
     <input type="text" name="nazwisko" id="nazwisko">
+
+    super robota! cofamy commita wip
+
     <br><br>
     <label for="zloty">Złoty:</label>
     <input type="text" name="zloty">
