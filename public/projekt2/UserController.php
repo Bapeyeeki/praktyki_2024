@@ -47,5 +47,30 @@ class UserController {
     public function getCompanies($user_id) {
         return $this->userModel->getCompanies($user_id);
     }
+
+    public function updateClient($user_id, $client_id, $new_name, $new_surname, $new_address) {
+        return $this->userModel->updateClient($user_id, $client_id, $new_name, $new_surname, $new_address);
+    }
+
+    public function updateCompany($user_id, $company_id, $new_name, $new_address) {
+        return $this->userModel->updateCompany($user_id, $company_id, $new_name, $new_address);
+    }
+
+    public function getClientById($user_id, $client_id) {
+        return $this->userModel->getClientById($user_id, $client_id);
+    }
+
+    public function getCompanyById($user_id, $company_id) {
+        return $this->userModel->getCompanyById($user_id, $company_id);
+    }
+
+    public function deleteClient($user_id, $client_id) {
+        return $this->userModel->deleteClient($user_id, $client_id);
+    }
+
+    public function deleteCompany($user_id, $company_id) {
+        return $this->userModel->deleteCompany($user_id, $company_id);
+    }
+
 }
 ?>

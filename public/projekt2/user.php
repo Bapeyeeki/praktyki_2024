@@ -74,4 +74,58 @@ class User {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getClientById($user_id, $client_id) {
+        $stmt = $this->conn->prepare("SELECT id, name, surname, address FROM clients WHERE user_id = :user_id AND id = :client_id");
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->bindParam(':client_id', $client_id);
+        if (!$stmt->execute()) {
+            print_r($stmt->errorInfo());
+            return null;
+        }
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getCompanyById($user_id, $company_id) {
+        $stmt = $this->conn->prepare("SELECT id, name, address FROM companies WHERE id = :company_id AND user_id = :user_id");
+        $stmt->bindParam(':company_id', $company_id);
+        $stmt->bindParam(':user_id', $user_id);
+        if (!$stmt->execute()) {
+            print_r($stmt->errorInfo());
+            return null;
+        }
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function updateClient($user_id, $client_id, $new_name, $new_surname, $new_address) {
+        $stmt = $this->conn->prepare("UPDATE clients SET name = :new_name, surname = :new_surname, address = :new_address WHERE id = :client_id AND user_id = :user_id");
+        $stmt->bindParam(':new_name', $new_name);
+        $stmt->bindParam(':new_surname', $new_surname);
+        $stmt->bindParam(':new_address', $new_address);
+        $stmt->bindParam(':client_id', $client_id);
+        $stmt->bindParam(':user_id', $user_id);
+        return $stmt->execute();
+    }
+
+    public function updateCompany($user_id, $company_id, $new_name, $new_address) {
+        $stmt = $this->conn->prepare("UPDATE companies SET name = :name, address = :address WHERE id = :company_id AND user_id = :user_id");
+        $stmt->bindParam(':name', $new_name);
+        $stmt->bindParam(':address', $new_address);
+        $stmt->bindParam(':company_id', $company_id);
+        $stmt->bindParam(':user_id', $user_id);
+        return $stmt->execute();
+    }
+
+    public function deleteClient($user_id, $client_id) {
+        $stmt = $this->conn->prepare("DELETE FROM clients WHERE id = :client_id AND user_id = :user_id");
+        $stmt->bindParam(':client_id', $client_id);
+        $stmt->bindParam(':user_id', $user_id);
+        return $stmt->execute();
+    }
+
+    public function deleteCompany($user_id, $company_id) {
+        $stmt = $this->conn->prepare("DELETE FROM companies WHERE id = :company_id AND user_id = :user_id");
+        $stmt->bindParam(':company_id', $company_id);
+        $stmt->bindParam(':user_id', $user_id);
+        return $stmt->execute();
+    }
 }
