@@ -21,12 +21,31 @@ class UserController {
         }
     }
 
-    public function addClient($client_name, $client_surname) {
-        return $this->userModel->addClient($client_name, $client_surname);
+
+    public function addClient($client_name, $client_surname, $client_address) {
+        if(isset($_SESSION['user_id'])) {
+            $user_id = $_SESSION['user_id'];
+            return $this->userModel->addClient($user_id, $client_name, $client_surname, $client_address);
+        } else {
+            return "Błąd: użytkownik niezalogowany.";
+        }
     }
 
-    public function addCompany($company_name) {
-        return $this->userModel->addCompany($company_name);
+    public function addCompany($company_name, $company_address) {
+        if(isset($_SESSION['user_id'])) {
+            $user_id = $_SESSION['user_id'];
+            return $this->userModel->addCompany($user_id, $company_name, $company_address);
+        } else {
+            return "Błąd: użytkownik niezalogowany.";
+        }
+    }
+
+    public function getClients($user_id) {
+        return $this->userModel->getClients($user_id);
+    }
+
+    public function getCompanies($user_id) {
+        return $this->userModel->getCompanies($user_id);
     }
 }
 ?>

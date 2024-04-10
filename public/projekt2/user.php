@@ -37,15 +37,41 @@ class User {
         }
     }
 
-    public function addClient($client_name, $client_surname) {
-        
-        $stmt = $this->conn->prepare("INSERT INTO clients (name, surname) VALUES (:client_name, :client_surname)");
-        
-        $stmt->bindParam(':client_name', $client_name);
-        $stmt->bindParam(':client_surname', $client_surname);
-        
+    public function addClient($user_id, $client_name, $client_surname, $client_address) {
+        $stmt = $this->conn->prepare("INSERT INTO clients (user_id, name, surname, address) VALUES (:user_id, :name, :surname, :address)");
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->bindParam(':name', $client_name);
+        $stmt->bindParam(':surname', $client_surname);
+        $stmt->bindParam(':address', $client_address);
         return $stmt->execute();
     }
 
+    public function addCompany($user_id, $company_name, $company_address) {
+        $stmt = $this->conn->prepare("INSERT INTO companies (user_id, name, address) VALUES (:user_id, :name, :address)");
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->bindParam(':name', $company_name);
+        $stmt->bindParam(':address', $company_address);
+        return $stmt->execute();
+    }
+
+    public function getClients($user_id) {
+        $stmt = $this->conn->prepare("SELECT id,name, surname FROM clients WHERE user_id = :user_id");
+        $stmt->bindParam(':user_id', $user_id);
+        if (!$stmt->execute()) {
+            print_r($stmt->errorInfo());
+            return null;
+        }
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    public function getCompanies($user_id) {
+        $stmt = $this->conn->prepare("SELECT id,name FROM companies WHERE user_id = :user_id");
+        $stmt->bindParam(':user_id', $user_id);
+        if (!$stmt->execute()) {
+            print_r($stmt->errorInfo());
+            return null;
+        }
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
 }

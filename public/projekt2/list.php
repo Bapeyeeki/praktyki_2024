@@ -19,20 +19,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['type'])) {
         $type = $_POST['type'];
 
-        if ($type === "client" && isset($_POST['client_name']) && isset($_POST['client_surname'])) {
+        if ($type === "client" && isset($_POST['client_name']) && isset($_POST['client_surname']) && isset($_POST['client_address'])) {
             $client_name = $_POST['client_name'];
             $client_surname = $_POST['client_surname'];
-            $message = $userController->addClient($client_name, $client_surname);
-            echo $message;
+            $client_address = $_POST['client_address'];
+            $message = $userController->addClient($client_name, $client_surname, $client_address);
+            echo "Dodano klienta";
         }
 
-        if ($type === "company" && isset($_POST['company_name'])) {
+        if ($type === "company" && isset($_POST['company_name']) && isset($_POST['company_address'])) {
             $company_name = $_POST['company_name'];
-            $message = $userController->addCompany($company_name);
-            echo $message;
+            $company_address = $_POST['company_address'];
+            $message = $userController->addCompany($company_name, $company_address);
+            echo "Dodano firme";
         }
     }
 }
+
+$clients = $userController->getClients($_SESSION['user_id']);
+$companies = $userController->getCompanies($_SESSION['user_id']);
 ?>
 
 <!DOCTYPE html>
@@ -51,6 +56,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <input type="text" id="client_name" name="client_name" required><br><br>
         <label for="client_surname">Nazwisko:</label>
         <input type="text" id="client_surname" name="client_surname" required><br><br>
+        <label for="client_address">Adres:</label>
+        <input type="text" id="client_address" name="client_address" required><br><br>
         <input type="submit" value="Dodaj klienta">
     </form>
 
@@ -60,7 +67,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <input type="hidden" name="type" value="company">
         <label for="company_name">Nazwa:</label>
         <input type="text" id="company_name" name="company_name" required><br><br>
+        <label for="company_address">Adres:</label>
+        <input type="text" id="company_address" name="company_address" required><br><br>
         <input type="submit" value="Dodaj firmę">
     </form>
+
+     <!-- Lista klientów -->
+     <h2>Klienci</h2>
+        <ul>
+            <?php foreach ($clients as $client): ?>
+                <li><a href="client.php?id=<?php echo $client['id']; ?>"><?php echo $client['name'] . ' ' . $client['surname']; ?></a></li>
+            <?php endforeach; ?>
+        </ul>
+
+    <!-- Lista firm -->
+    <h2>Firmy</h2>
+    <ul>
+        <?php if (!empty($companies)): ?>
+            <?php foreach ($companies as $company): ?>
+                <li><a href="company.php?id=<?php echo $company['id']; ?>"><?php echo $company['name']; ?></a></li>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <li>Brak firm.</li>
+        <?php endif; ?>
+    </ul>
 </body>
 </html>
