@@ -1,6 +1,8 @@
 <?php
+
 session_start();
 require_once 'User.php';
+require_once 'config.php';
 
 // Sprawdzenie, czy użytkownik jest zalogowany
 if (!isset($_SESSION['user_id'])) {
@@ -32,17 +34,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header("Location: updateC.php?id=" . $client_id);
         exit();
     } elseif (isset($_POST['delete'])) {
-        if ($userModel->deleteClient($_SESSION['user_id'], $client_id)) {
-            // Pomyślnie usunięto klienta, przekierowanie na listę klientów lub inną stronę
-            header("Location: list.php");
-            exit();
-        } else {
-            echo "Wystąpił błąd podczas usuwania klienta.";
-            exit();
-        }
-    } elseif (isset($_POST['calculate_route'])) {
-        // Obsługa wyznaczania trasy
+        // Obsługa usunięcia klienta
         // ...
+    } elseif (isset($_POST['calculate_route'])) {
+        // Wyznaczenie trasy
+        $start = "Warszawa"; // Twój adres lub punkt startowy
+        $end = $client['address']; // Adres klienta jako punkt docelowy
+        $routeDuration = getRouteDuration($start, $end, $bing_maps_api_key);
+        echo "Szacowany czas podróży: $routeDuration";
     }
 }
 ?>

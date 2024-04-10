@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once 'User.php';
+require_once 'config.php';
 
 // Sprawdzenie, czy użytkownik jest zalogowany
 if (!isset($_SESSION['user_id'])) {
@@ -42,10 +43,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit();
         }
     } elseif (isset($_POST['calculate_route'])) {
-        // Obsługa wyznaczania trasy
-        // Kod wyznaczania trasy
+        // Wyznaczenie trasy
+        $start = "Berlin"; // Twój adres lub punkt startowy
+        $end = $company['address']; // Adres firmy jako punkt docelowy
+        $routeDuration = getRouteDuration($start, $end, $bing_maps_api_key);
+        echo "Szacowany czas podróży: $routeDuration";
     }
 }
+ 
 ?>
 
 <!DOCTYPE html>

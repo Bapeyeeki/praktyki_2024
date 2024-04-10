@@ -75,9 +75,13 @@ $companies = $userController->getCompanies($_SESSION['user_id']);
      <!-- Lista klientów -->
      <h2>Klienci</h2>
         <ul>
+        <?php if (!empty($clients)): ?>
             <?php foreach ($clients as $client): ?>
                 <li><a href="client.php?id=<?php echo $client['id']; ?>"><?php echo $client['name'] . ' ' . $client['surname']; ?></a></li>
             <?php endforeach; ?>
+            <?php else: ?>
+                <li>Brak Klientów.</li>
+            <?php endif; ?>
         </ul>
 
     <!-- Lista firm -->
