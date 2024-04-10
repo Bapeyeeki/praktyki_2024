@@ -1,6 +1,7 @@
 <?php
 require __DIR__ . '/../../vendor/autoload.php';
 
+use GuzzleHttp\Client;
 use Carbon\Carbon;
 
 // Klucz API Bing Maps
@@ -13,30 +14,16 @@ $bing_maps_api_url = "https://dev.virtualearth.net/REST/v1/Routes/Driving";
 function getRouteDuration($start, $end, $apiKey) {
     global $bing_maps_api_url;
 
+    $client = new Client();
+
     $startEncoded = urlencode($start);
     $endEncoded = urlencode($end);
 
     $requestUrl = "$bing_maps_api_url?wp.0=$startEncoded&wp.1=$endEncoded&key=$apiKey";
 
-    $curl = curl_init();
-
-    curl_setopt_array($curl, array(
-        CURLOPT_URL => $requestUrl,
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_FOLLOWLOCATION => true,
-        CURLOPT_TIMEOUT => 30,
-        CURLOPT_CUSTOMREQUEST => "GET",
-    ));
-
-    $response = curl_exec($curl);
-    $err = curl_error($curl);
-
-    curl_close($curl);
-
-    if ($err) {
-        return "Błąd podczas pobierania danych: " . $err;
-    } else {
-        $responseData = json_decode($response, true);
+    try {
+        $response = $client->request('GET', $requestUrl);
+        $responseData = json_decode($response->getBody(), true);
         $travelDurationInSeconds = $responseData["resourceSets"][0]["resources"][0]["travelDurationTraffic"];
         
         // Utwórz obiekt CarbonInterval z czasem podróży w sekundach
@@ -44,8 +31,7 @@ function getRouteDuration($start, $end, $apiKey) {
         
         // Zwróć sformatowany czas podróży (H:i)
         return $travelDuration->format('H:i');
+    } catch (Exception $e) {
+        return "Błąd podczas pobierania danych: " . $e->getMessage();
     }
 }
-
-
-
