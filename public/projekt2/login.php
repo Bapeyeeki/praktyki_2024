@@ -1,40 +1,25 @@
 <?php
 session_start();
-
 require_once 'User.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Połączenie z bazą danych
-    $servername = "mysql";
-    $db_username = "v.je";
-    $db_password = "v.je";
-    $db_name = "praktyki";
+    $userModel = new User();
 
-    try {
-        $conn = new PDO("mysql:host=$servername;dbname=$db_name", $db_username, $db_password);
-        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $username = $_POST['username'];
+    $password = $_POST['password'];
 
-        $userModel = new User($conn);
+    // Logowanie użytkownika
+    $user_id = $userModel->login($username, $password);
+    if ($user_id) {
+        // Zalogowanie użytkownika
+        $_SESSION['user_id'] = $user_id;
+        $_SESSION['username'] = $username;
 
-        // Pobranie danych z formularza logowania
-        $username = $_POST['username'];
-        $password = $_POST['password'];
-
-        // Logowanie użytkownika
-        $user_id = $userModel->login($username, $password);
-        if ($user_id) {
-            // Zalogowanie użytkownika
-            $_SESSION['user_id'] = $user_id;
-            $_SESSION['username'] = $username;
-
-            // Przekierowanie na stronę główną po zalogowaniu
-            header("Location: list.php");
-            exit();
-        } else {
-            $login_error = "Nieprawidłowa nazwa użytkownika lub hasło.";
-        }
-    } catch(PDOException $e) {
-        echo "Connection failed: " . $e->getMessage();
+        // Przekierowanie na stronę główną po udanym logowaniu
+        header("Location: list.php");
+        exit();
+    } else {
+        $login_error = "Nieprawidłowa nazwa użytkownika lub hasło.";
     }
 }
 ?>

@@ -1,6 +1,7 @@
 <?php
 session_start();
-require_once 'User.php'; // Import klasy User
+require_once 'UserController.php';
+
 
 // Sprawdzenie, czy użytkownik jest zalogowany
 if (!isset($_SESSION['user_id'])) {
@@ -8,37 +9,29 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-// Połączenie z bazą danych
-$servername = "mysql";
-$db_username = "v.je";
-$db_password = "v.je";
-$db_name = "praktyki";
+$db = new Database();
+$conn = $db->getConnection();
 
-try {
-    $conn = new PDO("mysql:host=$servername;dbname=$db_name", $db_username, $db_password);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+$userController = new UserController($conn); // Przekazanie połączenia z bazą danych do konstruktora
 
-    $userModel = new User($conn);
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Obsługa dodawania klienta lub firmy
+    if (isset($_POST['type'])) {
+        $type = $_POST['type'];
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        // Obsługa dodawania klienta lub firmy
-        if (isset($_POST['type'])) {
-            $type = $_POST['type'];
+        if ($type === "client" && isset($_POST['client_name']) && isset($_POST['client_surname'])) {
+            $client_name = $_POST['client_name'];
+            $client_surname = $_POST['client_surname'];
+            $message = $userController->addClient($client_name, $client_surname);
+            echo $message;
+        }
 
-            if ($type === "client" && isset($_POST['client_name']) && isset($_POST['client_surname'])) {
-                $client_name = $_POST['client_name'];
-                $client_surname = $_POST['client_surname'];
-                $userModel->addClient($client_name, $client_surname);
-            }
-
-            if ($type === "company" && isset($_POST['company_name'])) {
-                $company_name = $_POST['company_name'];
-                $userModel->addCompany($company_name);
-            }
+        if ($type === "company" && isset($_POST['company_name'])) {
+            $company_name = $_POST['company_name'];
+            $message = $userController->addCompany($company_name);
+            echo $message;
         }
     }
-} catch(PDOException $e) {
-    echo "Connection failed: " . $e->getMessage();
 }
 ?>
 

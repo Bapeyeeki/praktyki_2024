@@ -20,4 +20,13 @@ class UserController {
             }
         }
     }
+
+    public function addClient($client_name, $client_surname) {
+        return $this->userModel->addClient($client_name, $client_surname);
+    }
+
+    public function addCompany($company_name) {
+        return $this->userModel->addCompany($company_name);
+    }
 }
+?>

@@ -1,9 +1,12 @@
 <?php
+require_once 'database.php';
+
 class User {
     private $conn;
 
-    public function __construct($conn) {
-        $this->conn = $conn;
+    public function __construct() {
+        $db = new Database();
+        $this->conn = $db->getConnection();
     }
 
     public function register($username, $password) {
@@ -33,4 +36,16 @@ class User {
             return false;
         }
     }
+
+    public function addClient($client_name, $client_surname) {
+        
+        $stmt = $this->conn->prepare("INSERT INTO clients (name, surname) VALUES (:client_name, :client_surname)");
+        
+        $stmt->bindParam(':client_name', $client_name);
+        $stmt->bindParam(':client_surname', $client_surname);
+        
+        return $stmt->execute();
+    }
+
+
 }
