@@ -11,7 +11,7 @@
         <h3>Rejestracja</h3>
         <input type="text" name="uid" placeholder="Username"><br><br>
         <input type="password" name="pwd" placeholder="Password"><br><br>
-        <input type="password" name="pwdrepeat" placeholder="Repeat Password"><br><br>
+        <input type="password" name="pwdR" placeholder="Repeat Password"><br><br>
         <button type="submit" name="submit">SIGN UP</button>
     </form>
 
