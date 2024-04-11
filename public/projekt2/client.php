@@ -34,8 +34,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header("Location: updateC.php?id=" . $client_id);
         exit();
     } elseif (isset($_POST['delete'])) {
-        // Obsługa usunięcia klienta
-        // ...
+        if ($userModel->deleteClient($_SESSION['user_id'], $client_id)) {
+            // Pomyślnie usunięto klienta, przekierowanie na listę firm lub inną stronę
+            header("Location: list.php");
+            exit();
+        } else {
+            echo "Wystąpił błąd podczas usuwania firmy.";
+            exit();
+        }
     } elseif (isset($_POST['calculate_route'])) {
         // Wyznaczenie trasy
         $start = "Warszawa"; // Twój adres lub punkt startowy
