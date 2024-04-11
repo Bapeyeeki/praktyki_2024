@@ -30,7 +30,5 @@
 
             <input type="submit" value="Zaloguj się">
         </form>
-
-    
 </body>
 </html>
