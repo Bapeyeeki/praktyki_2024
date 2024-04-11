@@ -14,6 +14,11 @@ $bing_maps_api_url = "https://dev.virtualearth.net/REST/v1/Routes/Driving";
 function getRouteDuration($start, $end, $apiKey) {
     global $bing_maps_api_url;
 
+    // Walidacja adresów startowych i końcowych
+    if (empty($start) || empty($end)) {
+        return "Błąd: Adres startowy lub końcowy jest pusty.";
+    }
+
     $client = new Client();
 
     $startEncoded = urlencode($start);
@@ -22,7 +27,15 @@ function getRouteDuration($start, $end, $apiKey) {
     $requestUrl = "$bing_maps_api_url?wp.0=$startEncoded&wp.1=$endEncoded&key=$apiKey";
 
     try {
-        $response = $client->request('GET', $requestUrl);
+        // Ustaw maksymalny czas oczekiwania na odpowiedź na 10 sekund
+        $response = $client->request('GET', $requestUrl, ['timeout' => 10]);
+
+        // Sprawdź kod odpowiedzi HTTP
+        $statusCode = $response->getStatusCode();
+        if ($statusCode != 200) {
+            return "Błąd: Nieprawidłowy kod odpowiedzi HTTP: $statusCode";
+        }
+
         $responseData = json_decode($response->getBody(), true);
         $travelDurationInSeconds = $responseData["resourceSets"][0]["resources"][0]["travelDurationTraffic"];
         
