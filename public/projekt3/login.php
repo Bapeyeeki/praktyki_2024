@@ -1,6 +1,6 @@
 <?php
 require_once 'UserController.php';
-require_once 'db.php';
+require_once 'db.php'; 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $db = new Database();
@@ -8,25 +8,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $userController = new UserController($conn);
 
-    $email = $_POST['email'];
+    $username = $_POST['email'];
     $password = $_POST['password'];
 
-    $user_id = $userController->login($email, $password);
+    $user_id = $userController->login($username, $password);
 
     if ($user_id) {
-        // Pobranie typu konta użytkownika
-        $user_type = $userController->getUserType($email);
-
-        // Przekierowanie użytkownika na odpowiednią stronę w zależności od typu konta
-        if ($user_type === 'admin') {
+        $userType = $userController->getUserType($username);
+        if ($userType == 'administrator') {
             header("Location: admin.php");
             exit();
         } else {
-            header("Location: welcome.php");
+            header("Location: taski.php");
             exit();
         }
     } else {
-        // Nieprawidłowe dane logowania
-        echo "Nieprawidłowy adres e-mail lub hasło.";
+        echo "Nieprawidłowa nazwa użytkownika lub hasło.";
     }
 }

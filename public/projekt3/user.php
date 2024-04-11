@@ -33,12 +33,34 @@ class User {
         }
     }
 
+    public function getUserByEmail($email) {
+        $stmt = $this->conn->prepare("SELECT * FROM users_2 WHERE email = :email");
+        $stmt->bindParam(':email', $email);
+        $stmt->execute();
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $user;
+    }
+
     public function isEmailTaken($email) {
         $stmt = $this->conn->prepare("SELECT user_id FROM users_2 WHERE email = :email");
         $stmt->bindParam(':email', $email);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result !== false;
+    }
+    
+    public function getUserType($email) {
+        $stmt = $this->conn->prepare("SELECT account_type FROM users_2 WHERE email = :email");
+        $stmt->bindParam(':email', $email);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result['account_type'];
+    }
+
+    public function getAllUsers() {
+        $stmt = $this->conn->prepare("SELECT * FROM users_2");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     
 }

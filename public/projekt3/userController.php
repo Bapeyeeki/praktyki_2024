@@ -22,17 +22,25 @@ class UserController {
         }
     }
 
-    public function loginUser($email, $password) {
-        // Sprawdzamy poprawność danych logowania
-        return $this->userModel->login($email, $password);
+    public function login($email, $password) {
+        // Pobierz użytkownika na podstawie adresu e-mail
+        $user = $this->userModel->getUserByEmail($email);
+
+        // Sprawdź czy użytkownik istnieje i czy hasło jest poprawne
+        if ($user && password_verify($password, $user['password'])) {
+            // Zwróć identyfikator użytkownika
+            return $user['user_id'];
+        } else {
+            // W przypadku niepoprawnych danych logowania, zwróć false
+            return false;
+        }
     }
 
-    // Metoda do sprawdzania typu konta użytkownika
-    public function getUserType($email) {
-        $stmt = $this->conn->prepare("SELECT account_type FROM users_2 WHERE email = :email");
-        $stmt->bindParam(':email', $email);
-        $stmt->execute();
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $result['account_type'];
+    public function getUserType($username) {
+        return $this->userModel->getUserType($username);
+    }
+
+    public function getAllUsers() {
+        return $this->userModel->getAllUsers();
     }
 } 
