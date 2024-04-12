@@ -50,9 +50,9 @@ class Database {
         }
     
         if($sort_by === 'status') {
-            $sql .= " ORDER BY status ASC"; // Zmiana na odpowiednią kolumnę statusu zadania
+            $sql .= " ORDER BY is_done ASC"; // Uporządkowanie według statusu wykonania
         } elseif ($sort_by === 'task') {
-            $sql .= " ORDER BY task ASC";
+            $sql .= " ORDER BY task ASC"; // Uporządkowanie według opisu zadania
         }
     
         // Create prepared statement
