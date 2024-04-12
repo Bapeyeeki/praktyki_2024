@@ -67,20 +67,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <!-- Formularz edycji danych klienta -->
     <h2>Edycja danych klienta</h2>
-    <form action="client.php?id=<?php echo $client_id; ?>" method="POST">
+    <form action="client.php?id=<?= $client_id ?>" method="POST">
         <!-- Pola formularza do edycji danych klienta -->
         <input type="submit" name="edit" value="Edytuj dane">
     </form>
 
     <!-- Formularz usunięcia klienta -->
     <h2>Usuwanie klienta</h2>
-    <form action="client.php?id=<?php echo $client_id; ?>" method="POST">
+    <form action="client.php?id=<<?= $client_id ?>" method="POST">
         <input type="submit" name="delete" value="Usuń klienta">
     </form>
 
     <!-- Formularz wyznaczania trasy -->
     <h2>Wyznacz trasę</h2>
-    <form action="client.php?id=<?php echo $client_id; ?>" method="POST">
+    <form action="client.php?id=<?= $client_id ?>" method="POST">
         <input type="submit" name="calculate_route" value="Wyznacz trasę">
     </form>
 </body>

@@ -24,16 +24,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
-    // Walidacja unikalności nazwy użytkownika
-    if ($userController->isUsernameTaken($username)) {
-        echo "Nazwa użytkownika jest już zajęta.";
-        exit();
-    }
-
     if ($password !== $password_repeat) {
         echo "Hasła nie są identyczne.";
     } else {
-        $message = $userController->registerUser($username, $password, $conn); // Przekazano połączenie z bazą danych
+        $message = $userController->registerUser($username, $password); // Przekazano połączenie z bazą danych
 
         if ($message === "Rejestracja udana. Możesz się zalogować.") {
             header("Location: login.php");

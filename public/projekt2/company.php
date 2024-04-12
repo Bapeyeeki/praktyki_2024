@@ -67,19 +67,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <!-- Formularz edycji danych firmy -->
     <h2>Edycja danych firmy</h2>
-    <form action="company.php?id=<?php echo $company_id; ?>" method="POST">
+    <form action="company.php?id=<?= $company_id ?>" method="POST">
         <input type="submit" name="edit" value="Edytuj dane">
     </form>
 
     <!-- Formularz usunięcia firmy -->
     <h2>Usuwanie firmy</h2>
-    <form action="company.php?id=<?php echo $company_id; ?>" method="POST">
+    <form action="company.php?id=<?= $company_id ?>" method="POST">
         <input type="submit" name="delete" value="Usuń firmę">
     </form>
 
     <!-- Formularz wyznaczania trasy -->
     <h2>Wyznacz trasę</h2>
-    <form action="company.php?id=<?php echo $company_id; ?>" method="POST">
+    <form action="company.php?id=<?= $company_id ?>" method="POST">
         <input type="submit" name="calculate_route" value="Wyznacz trasę">
     </form>
 </body>
