@@ -77,7 +77,7 @@ $companies = $userController->getCompanies($_SESSION['user_id']);
         <ul>
         <?php if (!empty($clients)): ?>
             <?php foreach ($clients as $client): ?>
-                <li><a href="client.php?id=<?php echo $client['id']; ?>"><?php echo $client['name'] . ' ' . $client['surname']; ?></a></li>
+                <li><a href="client.php?id=<?= $client['id']; ?>"><?= $client['name'] . ' ' . $client['surname']; ?></a></li>
             <?php endforeach; ?>
             <?php else: ?>
                 <li>Brak Klientów.</li>
@@ -89,7 +89,7 @@ $companies = $userController->getCompanies($_SESSION['user_id']);
     <ul>
         <?php if (!empty($companies)): ?>
             <?php foreach ($companies as $company): ?>
-                <li><a href="company.php?id=<?php echo $company['id']; ?>"><?php echo $company['name']; ?></a></li>
+                <li><a href="company.php?id=<?= $company['id']; ?>"><?=  $company['name']; ?></a></li>
             <?php endforeach; ?>
         <?php else: ?>
             <li>Brak firm.</li>

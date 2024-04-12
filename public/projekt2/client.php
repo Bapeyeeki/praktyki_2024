@@ -61,9 +61,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
     <h1>Szczegóły klienta</h1>
-    <p>Imię: <?php echo $client['name']; ?></p>
-    <p>Nazwisko: <?php echo $client['surname']; ?></p>
-    <p>Adres: <?php echo $client['address']; ?></p>
+    <p>Imię: <?= $client['name']; ?></p>
+    <p>Nazwisko: <?= $client['surname']; ?></p>
+    <p>Adres: <?= $client['address']; ?></p>
 
     <!-- Formularz edycji danych klienta -->
     <h2>Edycja danych klienta</h2>

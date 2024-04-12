@@ -21,7 +21,6 @@ class UserController {
         }
     }
 
-
     public function addClient($client_name, $client_surname, $client_address) {
         if(isset($_SESSION['user_id'])) {
             $user_id = $_SESSION['user_id'];

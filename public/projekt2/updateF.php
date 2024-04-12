@@ -49,12 +49,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
     <h2>Edytuj dane firmy</h2>
-    <form action="updateF.php?id=<?php echo $company_id; ?>" method="POST">
+    <form action="updateF.php?id=<?= $company_id; ?>" method="POST">
         <!-- Pola formularza do edycji danych firmy -->
         <label for="new_name">Nowa nazwa:</label>
-        <input type="text" id="new_name" name="new_name" value="<?php echo $company['name']; ?>" required><br><br>
+        <input type="text" id="new_name" name="new_name" value="<?= $company['name']; ?>" required><br><br>
         <label for="new_address">Nowy adres:</label>
-        <input type="text" id="new_address" name="new_address" value="<?php echo $company['address']; ?>" required><br><br>
+        <input type="text" id="new_address" name="new_address" value="<?=  $company['address']; ?>" required><br><br>
         <input type="submit" value="Zapisz zmiany">
     </form>
 </body>

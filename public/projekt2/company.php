@@ -62,8 +62,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
     <h1>Szczegóły firmy</h1>
-    <p>Nazwa: <?php echo $company['name']; ?></p>
-    <p>Adres: <?php echo $company['address']; ?></p>
+    <p>Nazwa: <?= $company['name']; ?></p>
+    <p>Adres: <?= $company['address']; ?></p>
 
     <!-- Formularz edycji danych firmy -->
     <h2>Edycja danych firmy</h2>

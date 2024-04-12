@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <h2>Logowanie</h2>
     <?php if (isset($login_error)): ?>
-        <p style="color: red;"><?php echo $login_error; ?></p>
+        <p style="color: red;"><?= $login_error; ?></p>
     <?php endif; ?>
     <form action="login.php" method="POST">
         <label for="username">Nazwa użytkownika:</label>

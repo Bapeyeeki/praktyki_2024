@@ -53,11 +53,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <form action="updateC.php?id=<?php echo $client_id; ?>" method="POST">
         <!-- Pola formularza do edycji danych klienta -->
         <label for="new_name">Nowe imię:</label>
-        <input type="text" id="new_name" name="new_name" value="<?php echo $client['name']; ?>" required><br><br>
+        <input type="text" id="new_name" name="new_name" value="<?= $client['name']; ?>" required><br><br>
         <label for="new_surname">Nowe nazwisko:</label>
-        <input type="text" id="new_surname" name="new_surname" value="<?php echo $client['surname']; ?>" required><br><br>
+        <input type="text" id="new_surname" name="new_surname" value="<?= $client['surname']; ?>" required><br><br>
         <label for="new_address">Nowy adres:</label>
-        <input type="text" id="new_address" name="new_address" value="<?php echo $client['address']; ?>" required><br><br>
+        <input type="text" id="new_address" name="new_address" value="<?= $client['address']; ?>" required><br><br>
         <input type="submit" value="Zapisz zmiany">
     </form>
 </body>
