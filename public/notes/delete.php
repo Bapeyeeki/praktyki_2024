@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
         header("Location: index.php");
         exit;
     } else {
-        // W przypadku błędu wyświetlamy komunikat
+        // W przypadku błędu komunikat
         echo "Wystąpił błąd podczas usuwania notatki.";
     }
 } else {

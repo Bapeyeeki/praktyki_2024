@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header("Location: index.php");
         exit;
     } else {
-        // W przypadku błędu wyświetlamy komunikat
+        // W przypadku błędu komunikat
         echo "Wystąpił błąd podczas dodawania notatki.";
     }
 }
