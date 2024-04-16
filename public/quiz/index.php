@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['start_quiz'])) {
 
 <!-- Formularz wyboru kategorii -->
 <h2>Wybierz kategorię:</h2>
-<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+<form method="post" action="<?= htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
     <select name="category">
         <option value="Matematyka">Matematyka</option>
         <option value="Programowanie">Programowanie</option>
