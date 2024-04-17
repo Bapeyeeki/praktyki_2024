@@ -1,29 +1,50 @@
 <?php
 session_start();
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['answer'])) {
-    // Sprawdzenie odpowiedzi
-    $currentQuestion = $_SESSION['current_question'];
-    $questions = $_SESSION['questions'];
-
-    if ($_POST["answer"] == $questions[$currentQuestion]['correct']) {
-        $_SESSION['score']++;
-    }
-
-    $_SESSION['current_question']++;
-
-    if ($_SESSION['current_question'] >= count($questions)) {
-        // Jeśli użytkownik odpowiedział na wszystkie pytania, przekieruj go do podsumowania
-        $_SESSION['category'] = $_GET['category']; // Przechowujemy kategorię w sesji
-        header("Location: summary.php");
-        exit;
-    } else {
-        // Jeśli są jeszcze pytania, przekieruj użytkownika do kolejnego pytania
-        header("Location: question.php?category=" . urlencode($_GET['category']));
-        exit;
-    }
-} else {
-    // Jeśli użytkownik próbuje uzyskać dostęp do answer.php bez odpowiedzi na pytanie, przekieruj go na stronę główną
-    header("Location: index.php");
+if (!isset($_SESSION['questions'])) {
+    echo "Błąd: Brak pytań. Wróć do poprzedniej strony i rozpocznij quiz ponownie.";
     exit;
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['answers'])) {
+    // Pobranie udzielonych odpowiedzi
+    $selectedAnswers = $_POST['answers'];
+
+    // Pobranie prawidłowych odpowiedzi z sesji
+    $questions = $_SESSION['questions'];
+    $correctAnswers = array_column($questions, 'correct_answer');
+
+    // Inicjalizacja licznika poprawnych odpowiedzi
+    $score = 0;
+
+    // Porównanie udzielonych odpowiedzi z prawidłowymi odpowiedziami
+    foreach ($selectedAnswers as $index => $selectedAnswer) {
+        if (isset($correctAnswers[$index]) && isset($selectedAnswer) && $selectedAnswer === $correctAnswers[$index]) {
+            $score++;
+        }
+    }
+
+    // Wyświetlenie wyniku
+    echo "<h1>Twój wynik: $score/" . count($questions) . "</h1>";
+
+    // Możesz także wyświetlić konkretne pytania i odpowiedzi, wraz z informacją o poprawności odpowiedzi
+    echo "<h2>Pytania i odpowiedzi:</h2>";
+    foreach ($questions as $index => $question) {
+        $correctAnswer = isset($correctAnswers[$index]) ? $correctAnswers[$index] : 'Nieokreślona';
+        $selectedAnswer = isset($selectedAnswers[$index]) ? $selectedAnswers[$index] : 'Brak odpowiedzi';
+        echo "<p>Pytanie: " . htmlspecialchars($question['question']) . "</p>";
+        echo "<p>Twoja odpowiedź: " . htmlspecialchars($selectedAnswer) . "</p>";
+        echo "<p>Poprawna odpowiedź: " . htmlspecialchars($correctAnswer) . "</p>";
+        if (isset($selectedAnswers[$index]) && isset($correctAnswers[$index]) && $selectedAnswer === $correctAnswer) {
+            echo "<p style='color: green;'>Odpowiedź poprawna!</p>";
+        } else {
+            echo "<p style='color: red;'>Odpowiedź niepoprawna.</p>";
+        }
+        echo "<hr>";
+    }
+
+    // Usunięcie sesji z pytaniami po sprawdzeniu wyniku
+    unset($_SESSION['questions']);
+} else {
+    echo "Błąd: Brak odpowiedzi. Wróć do poprzedniej strony i spróbuj ponownie.";
 }

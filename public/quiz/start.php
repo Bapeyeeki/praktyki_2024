@@ -1,29 +1,41 @@
 <?php
-// Funkcja inicjująca nowy quiz
-function startNewQuiz() {
-    // Import zestawu pytań
-    include 'questions.php';
+session_start();
 
-    // Przemieszanie pytań
-    shuffle($questions);
+require_once 'TriviaAPI.php';
+require_once 'Categories.php';
 
-    // Wybierz tylko pierwsze 10 pytań
-    $selectedQuestions = array_slice($questions, 0, 10);
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['start_quiz'])) {
+    $selectedCategory = $_POST['category'];
 
-    // Przemieszanie wybranych pytań
-    shuffle($selectedQuestions);
+    $api = new TriviaAPI("https://opentdb.com/api.php");
+    $categories = new Categories($api);
 
-    // Zainicjowanie wyniku
-    $_SESSION['score'] = 0;
+    // Pobierz pytania dla wybranej kategorii
+    $questions = $categories->getQuestions($selectedCategory);
 
-    // Ustawienie bieżącego pytania
-    $_SESSION['current_question'] = 0;
+    if ($questions !== null) {
+        $_SESSION['questions'] = $questions;
+        $_SESSION['current_question'] = 0;
+        $_SESSION['score'] = 0;
 
-    // Zapisanie przemieszanych pytań do sesji
-    $_SESSION['questions'] = $selectedQuestions;
-
-    // Przemieszanie odpowiedzi dla każdego pytania
-    foreach ($_SESSION['questions'] as &$question) {
-        shuffle($question['options']);
+        // Przekieruj do strony z pytaniami
+        header("Location: question.php");
+        exit;
+    } else {
+        echo "Błąd: Brak pytań dla wybranej kategorii.";
     }
 }
+?>
+
+<!-- Formularz wyboru kategorii -->
+<h2>Wybierz kategorię:</h2>
+<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+    <select name="category">
+        <option value="9">Ogólne</option>
+        <option value="18">Nauka komputerowa</option>
+        <option value="17">Nauka o naturze</option>
+        <!-- Dodaj więcej opcji kategorii -->
+    </select>
+    <br><br>
+    <input type="submit" name="start_quiz" value="Rozpocznij quiz">
+</form>

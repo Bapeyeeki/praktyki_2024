@@ -1,33 +1,47 @@
 <?php
 session_start();
 
-if(!isset($_SESSION['category'])) {
-    // Obsługa błędu, gdyby kategoria nie została przechowana w sesji
-    echo "Błąd: Nie wybrano kategorii.";
-    exit;
-}
+// Sprawdzenie czy sesja została zainicjowana i czy przekazano odpowiedzi
+if (isset($_SESSION['questions']) && isset($_POST['answers'])) {
+    // Pobranie udzielonych odpowiedzi
+    $selectedAnswers = $_POST['answers'];
 
-$selectedCategory = $_SESSION['category'];
-$score = $_SESSION['score'];
-$totalQuestions = count($_SESSION['questions']);
-$percentage = ($score / $totalQuestions) * 100;
+    // Pobranie prawidłowych odpowiedzi z sesji
+    $questions = $_SESSION['questions'];
+    $correctAnswers = array_column($questions, 'correct_answer');
 
-// Komunikat w zależności od wyniku
-if ($percentage >= 80) {
-    $message = "Świetnie Ci poszło!";
-} elseif ($percentage >= 60) {
-    $message = "Nieźle, ale można lepiej!";
+    // Inicjalizacja licznika poprawnych odpowiedzi
+    $score = 0;
+
+    // Porównanie udzielonych odpowiedzi z prawidłowymi odpowiedziami
+    foreach ($selectedAnswers as $index => $selectedAnswer) {
+        if (isset($correctAnswers[$index]) && isset($selectedAnswer) && $selectedAnswer === $correctAnswers[$index]) {
+            $score++;
+        }
+    }
+
+    // Wyświetlenie wyniku
+    echo "<h1>Twój wynik: $score/" . count($questions) . "</h1>";
+
+    // Wyświetlenie pojedynczych pytań z odpowiedziami i ich poprawnością
+    echo "<h2>Pytania i odpowiedzi:</h2>";
+    foreach ($questions as $index => $question) {
+        $correctAnswer = isset($correctAnswers[$index]) ? $correctAnswers[$index] : 'Nieokreślona';
+        $selectedAnswer = isset($selectedAnswers[$index]) ? $selectedAnswers[$index] : 'Brak odpowiedzi';
+        echo "<p>Pytanie: " . htmlspecialchars($question['question']) . "</p>";
+        echo "<p>Twoja odpowiedź: " . htmlspecialchars($selectedAnswer) . "</p>";
+        echo "<p>Poprawna odpowiedź: " . htmlspecialchars($correctAnswer) . "</p>";
+        if (isset($selectedAnswers[$index]) && isset($correctAnswers[$index]) && $selectedAnswer === $correctAnswer) {
+            echo "<p style='color: green;'>Odpowiedź poprawna!</p>";
+        } else {
+            echo "<p style='color: red;'>Odpowiedź niepoprawna.</p>";
+        }
+        echo "<hr>";
+    }
+
+    // Usunięcie sesji z pytaniami po sprawdzeniu wyniku
+    unset($_SESSION['questions']);
 } else {
-    $message = "Musisz się jeszcze trochę pouczyć.";
+    // Komunikat o braku odpowiedzi lub braku zainicjowanej sesji
+    echo "Błąd: Brak odpowiedzi lub brak zainicjowanej sesji.";
 }
-
-echo "<h2>Twój wynik z kategorii $selectedCategory: $score/$totalQuestions</h2>";
-echo "<p>$message</p>";
-
-// Guzik zagraj ponownie
-echo '<form method="post" action="index.php">';
-echo '<input type="submit" name="restart" value="Zagraj ponownie">';
-echo '</form>';
-
-// Usuwamy kategorię z sesji, aby nie była dostępna po odświeżeniu strony
-unset($_SESSION['category']);
