@@ -34,7 +34,7 @@ class QueryBuilder {
     }
 
     public function join($table, $firstCoulm, $operator, $secondColumn, $type = 'INNER') {
-        $this->joins[] = "$type JOIN $table ON $firstCoulm $operator $secondColumn";
+        $this->joins[] = "$type JOIN $table ON $firstCoulmn $operator $secondColumn";
         return $this;
     }
 
