@@ -26,6 +26,7 @@ class QueryBuilder {
 
     public function orderBy($column, $direction = 'ASC') {
         $this->orderBy = "$column $direction";
+        return $this;
     }
 
     public function update(array $data) {
