@@ -19,8 +19,8 @@ try {
         ->table('userss')
         ->select(['id', 'name', 'email'])
         ->where('status', '=', 'active')
-        ->where('age', '>', 18);
-        ->orderBy('name', 'ASC');
+        ->where('age', '>', 18) 
+        ->orderBy('name', 'ASC')
         ->buildSelect();
 
     $statement = $conn->query($query);
